@@ -124,7 +124,7 @@ func (r *Repository) GetCart() ([]Interval, error) {
 
 	var result []Interval
 	for _, interval := range intervals {
-		if interval.ID == 4 || interval.ID == 7 {
+		if interval.ID == 1 || interval.ID == 2 {
 			result = append(result, interval)
 		}
 	}

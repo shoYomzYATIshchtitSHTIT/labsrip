@@ -18,7 +18,6 @@
 
     {{ range .service_intervals }}
     <div class="row">
-        <!-- Карточка -->
         <div class="order-card">
             <div class="interval-info">
                 <img src="http://localhost:9000/interval-image/{{ .Image }}" alt="{{ .Title }}">
@@ -31,7 +30,6 @@
             </div>
         </div>
 
-        <!-- Блок справа -->
         <div class="interval-input">
             <label for="count{{ .ID }}">Число интервалов</label>
             <input type="number" id="count{{ .ID }}" name="count{{ .ID }}" min="1" value="1">
