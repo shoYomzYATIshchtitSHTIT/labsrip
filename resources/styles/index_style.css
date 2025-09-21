@@ -1,0 +1,278 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.header {
+    background-color: #7978F7;
+    padding: 15px 30px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.logo h1 {
+    font-size: 22px;
+    margin: 0;
+}
+
+/* Поиск */
+.search-form {
+    display: flex;
+    gap: 10px;
+}
+
+.search-form input {
+    background: #e3dddd;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 250px;
+    margin-left: 30px;
+    margin-top: 10px;
+}
+
+.search-form button {
+    padding: 8px 15px;
+    background-color: #D7C9FC;
+    border: 1px solid #E3DDDD;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.search-form button:hover {
+    background-color: #B8A6E5;
+    color: white;
+}
+
+
+/* Контейнер с карточками */
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 30px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    font-family: Roboto, serif;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.card p{
+    color: #726969;
+}
+
+.card .tone {
+    font-style: normal;
+    margin: 10px 0;
+    color: black;
+}
+
+/* Кнопки */
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.btn {
+    display: block;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.btn.more {
+    background-color: #D7C9FC;
+    color: #333;
+}
+
+.btn.more:hover {
+    background-color: #B8A6E5;
+    color: white;
+}
+
+.btn.add {
+    background-color: #AFF3BB;
+    color: #000;
+}
+
+.btn.add:hover {
+    background-color: #7edc7e;
+    color: white;
+}
+
+.cart-badge {
+    font-size: 40px;
+}
+
+.interval-card {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 20px;
+    max-width: 700px;
+    background: white;
+}
+
+.interval-card h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.interval-body {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.interval-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.interval-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 600px;
+    background: #fff;
+}
+
+.interval-card h2 {
+    margin-bottom: 15px;
+}
+
+.interval-body img {
+    width: 200px;
+    height: auto;
+}
+
+.interval-info p {
+    margin: 0;
+}
+
+.interval-info .tone {
+    font-weight: 500;
+}
+
+.order-section {
+    padding: 30px;
+}
+
+.order-section h2 {
+    margin-bottom: 20px;
+}
+
+.composition-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.order-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 400px;
+}
+
+.interval-info {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.interval-info img {
+    width: 120px;
+    height: auto;
+}
+
+.interval-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.interval-text h3 {
+    margin: 0;
+}
+
+.interval-text p {
+    margin: 2px 0;
+    color: #333;
+}
+
+.interval-input {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.interval-input input {
+    width: 120px;
+    padding: 6px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.result-box {
+    background-color: #AFF3BB;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    margin: 30px auto;
+    width: fit-content;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 20px;
+}

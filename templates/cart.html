@@ -1,0 +1,45 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина интервалов</title>
+    <link rel="stylesheet" href="/static/styles/index_style.css">
+</head>
+<body>
+<div class="header">
+    <div class="logo">
+        <img src="/static/img/image.png" alt="logo">
+        <h1><a href="/" style="color: white; text-decoration: none;">Интервалы</a></h1>
+    </div>
+</div>
+
+<div class="order-section">
+    <h2>Составление заявки</h2>
+    <input type="text" class="composition-input" placeholder="Введите название произведения и композитора">
+
+    {{ range .service_intervals }}
+    <div class="row">
+        <div class="order-card">
+            <div class="interval-info">
+                <img src="http://localhost:9000/interval-image/{{ .Image }}" alt="{{ .Title }}">
+                <div class="interval-text">
+                    <h3>{{ .Title }}</h3>
+                    <p>{{ .Description }}</p>
+                    <p>{{ .Tone }} тона</p>
+                    <a href="/interval/{{ .ID }}" class="btn more">Подробнее</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="interval-input">
+            <label for="count{{ .ID }}">Число интервалов</label>
+            <input type="number" id="count{{ .ID }}" name="count{{ .ID }}" min="1" value="1">
+        </div>
+    </div>
+    {{ end }}
+
+    <div class="result-box">
+        Результат: Произведение является классическим
+    </div>
+</div>
+</body>
+</html>
