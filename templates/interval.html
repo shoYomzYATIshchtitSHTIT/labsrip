@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ .interval.Title }}</title>
-    <link rel="stylesheet" href="/static/styles/index_style.css">
+    <link rel="stylesheet" href="/styles/index_style.css">
 </head>
 <body>
 
@@ -18,7 +18,7 @@
     <div class="interval-card">
         <h2>{{ .interval.Title }}</h2>
         <div class="interval-body">
-            <img src="http://localhost:9000/interval-image/{{ .interval.Image }}" alt="{{ .interval.Title }}">
+            <img src="{{ .interval.Photo }}" alt="{{ .interval.Title }}">
             <div class="interval-info">
                 <p>{{ .interval.Description }}</p>
                 <p class="tone">{{ .interval.Tone }} тон</p>

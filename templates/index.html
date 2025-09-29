@@ -3,46 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Интервалы</title>
-    <link rel="stylesheet" href="/static/styles/index_style.css">
+    <link rel="stylesheet" href="/styles/index_style.css">
 </head>
 <body>
 <header class="header">
-    <div class="logo">
-        <img src="/static/img/image.png" alt="Логотип">
-        <h1>
-            <a href="/" style="color: white; text-decoration: none"> Интервалы </a>
-        </h1>
-    </div>
+    <h1 class="logo">
+        <a href="/" style="color: white; text-decoration: none;">
+            <img src="/static/img/image.png" alt="Логотип">
+            Интервалы
+        </a>
+    </h1>
 </header>
 
-<section class="search-section">
+<div class="space">
     <form action="/" method="GET" class="search-form">
         <input type="text" name="query" placeholder="Поиск интервала" value="{{ .query }}">
-        <button type="submit">Найти</button>
+        <button type="submit">🔎</button>
     </form>
-</section>
-
-<main class="content">
     <div class="container">
         {{ range .intervals }}
         <div class="card">
-            <img src="http://localhost:9000/interval-image/{{ .Image }}" alt="img" class = "img">
+            <img src="{{ .Photo }}" alt="img" class="img">
             <h2>{{ .Title }}</h2>
             <p class="desc">{{ .Description }}</p>
             <p class="tone">{{ .Tone }} тон</p>
-            <div class="buttons">
+            <div class="row" style="display: flex; justify-content: space-between; gap: 10px; align-self: start; margin-left: 20px;">
                 <a href="/interval/{{ .ID }}" class="btn more">Подробнее</a>
-                <a class="btn add">Добавить</a>
+                <form method="POST" action="/composition/add">
+                    <input type="hidden" name="interval_id" value="{{ .ID }}">
+                    <button class="btn add">Добавить</button>
+                </form>
             </div>
         </div>
         {{ end }}
     </div>
-</main>
-</body>
-<a href="/cart" style = "width: 130px; height: 130px;">
+</div>
+
+<a href="/composition/{{ .composition_ID }}" style="width: 130px; height: 130px;">
     <img src="/static/img/loupe.png" style="height: 100px; width: 100px;" alt="Корзина">
-    {{ if .cartCount }}
-    <span class="cart-badge" style="text-decoration: none">{{ .cartCount }}</span>
+    {{ if .composition_count }}
+    <span class="cart-badge">{{ .composition_count }}</span>
     {{ end }}
 </a>
+</body>
 </html>

@@ -2,10 +2,11 @@ package handler
 
 import (
 	"Backend-RIP/internal/app/ds"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func (h *Handler) GetIntervals(ctx *gin.Context) {
@@ -45,7 +46,7 @@ func (h *Handler) GetInterval(ctx *gin.Context) {
 		logrus.Error(err)
 	}
 
-	ctx.HTML(http.StatusOK, "order.html", gin.H{
+	ctx.HTML(http.StatusOK, "interval.html", gin.H{
 		"interval": interval,
 	})
 }
@@ -72,14 +73,14 @@ func (h *Handler) GetComposition(ctx *gin.Context) {
 		logrus.Error(err)
 	}
 
-	ctx.HTML(http.StatusOK, "cart.html", gin.H{
+	ctx.HTML(http.StatusOK, "composition.html", gin.H{
 		"composition":    compositionItems,
-		"composition_ID": id,
+		"composition_id": id,
 	})
 }
 
 func (h *Handler) AddToComposition(ctx *gin.Context) {
-	intervalIDStr := ctx.PostForm("id")
+	intervalIDStr := ctx.PostForm("interval_id")
 	intervalID, err := strconv.Atoi(intervalIDStr)
 	if err != nil {
 		h.errorHandler(ctx, http.StatusBadRequest, err)
@@ -98,7 +99,7 @@ func (h *Handler) AddToComposition(ctx *gin.Context) {
 }
 
 func (h *Handler) DeleteComposition(ctx *gin.Context) {
-	comIDStr := ctx.PostForm("id")
+	comIDStr := ctx.PostForm("composition_id")
 	comID, err := strconv.Atoi(comIDStr)
 	if err != nil {
 		h.errorHandler(ctx, http.StatusBadRequest, err)

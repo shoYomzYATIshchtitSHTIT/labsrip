@@ -46,7 +46,7 @@ func (r *Repository) GetCompositionCount() int64 {
 	var count int64
 	creatorID := 1
 
-	err := r.db.Model(&ds.Composition{}).Where("creator_id = ? AND status = ?", creatorID, "черновик").Select("id").First(&CompositionID).Error
+	err := r.db.Model(&ds.Composition{}).Where("creator_id = ? AND status = ?", creatorID, "Черновик").Select("id").First(&CompositionID).Error
 	if err != nil {
 		return 0
 	}
@@ -61,7 +61,7 @@ func (r *Repository) GetCompositionCount() int64 {
 
 func (r *Repository) GetActiveCompositionID() uint {
 	var CompositionID uint
-	err := r.db.Model(&ds.Composition{}).Where("status = ?", "черновик").Select("id").First(&CompositionID).Error
+	err := r.db.Model(&ds.Composition{}).Where("status = ?", "Черновик").Select("id").First(&CompositionID).Error
 	if err != nil {
 		return 0
 	}
@@ -70,7 +70,7 @@ func (r *Repository) GetActiveCompositionID() uint {
 
 func (r *Repository) GetComposition(id int) ([]ds.CompositorInterval, error) {
 	var compositionItems []ds.CompositorInterval
-	err := r.db.Where("compositon_id = ?", id).Preload("Interval").Find(&compositionItems).Error
+	err := r.db.Where("composition_id = ?", id).Preload("Interval").Find(&compositionItems).Error
 	if err != nil {
 		return nil, err
 	}
@@ -81,12 +81,12 @@ func (r *Repository) GetComposition(id int) ([]ds.CompositorInterval, error) {
 func (r *Repository) AddInterval(intervalsID uint, creatorID uint) error {
 	var app ds.Composition
 
-	err := r.db.Where("creator_id = ? AND status = ?", creatorID, "черновик").
+	err := r.db.Where("creator_id = ? AND status = ?", creatorID, "Черновик").
 		First(&app).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		app = ds.Composition{
-			Status:      "черновик",
+			Status:      "Черновик",
 			DateCreate:  time.Now(),
 			CreatorID:   creatorID,
 			ModeratorID: 2,
@@ -125,7 +125,7 @@ func (r *Repository) AddInterval(intervalsID uint, creatorID uint) error {
 func (r *Repository) DeleteComposition(comID uint) error {
 	query := `
 		UPDATE compositions 
-		SET status = 'удалён'
+		SET status = 'Удалён'
 		WHERE id = $1;
 	`
 	result := r.db.Exec(query, comID)
@@ -144,5 +144,5 @@ func (r *Repository) IsDraftComposition(comID int) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	return com.Status == "черновик", nil
+	return com.Status == "Черновик", nil
 }

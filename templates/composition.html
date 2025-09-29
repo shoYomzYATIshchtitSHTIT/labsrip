@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина интервалов</title>
+    <link rel="stylesheet" href="/styles/index_style.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <img src="/static/img/image.png" alt="Логотип">
+        <h1><a href="/" style="color: white; text-decoration: none;">Интервалы</a></h1>
+    </div>
+</header>
+
+<div class="order-section">
+    <h2>Составление заявки</h2>
+    <input type="text" class="composition-input" placeholder="Введите название произведения и композитора">
+
+    {{ range .composition }}
+    <div class="row">
+        <div class="order-card">
+            <img src="{{ .Interval.Photo }}" alt="{{ .Interval.Title }}" class="interval-img">
+            <div class="interval-content">
+                <h3>{{ .Interval.Title }}</h3>
+                <p>{{ .Interval.Description }}</p>
+                <p class="tone">{{ .Interval.Tone }} тона</p>
+                <a href="/interval/{{ .Interval.ID }}" class="btn more">Подробнее</a>
+            </div>
+        </div>
+
+        <div class="interval-input">
+            <label for="count{{ .Amount }}">Число интервалов</label>
+            <input type="number" id="count{{ .Amount }}" name="count{{ .Amount }}" min="1" value="1">
+        </div>
+    </div>
+    {{ end }}
+
+<!--    <div class="result-box">-->
+<!--        Результат: Произведение является классическим-->
+<!--    </div>-->
+
+    <!-- кнопка удалить заявку -->
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+        <form method="POST" action="/composition/delete">
+            <input type="hidden" name="composition_id" value="{{ .composition_id  }}">
+            <button type="submit" class="btn add">
+                Удалить заявку
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
