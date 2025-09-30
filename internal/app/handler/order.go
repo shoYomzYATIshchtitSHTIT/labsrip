@@ -13,14 +13,14 @@ func (h *Handler) GetIntervals(ctx *gin.Context) {
 	var intervals []ds.Interval
 	var err error
 
-	searchQuery := ctx.Query("query")
-	if searchQuery == "" {
+	intervalsQuery := ctx.Query("query")
+	if intervalsQuery == "" {
 		intervals, err = h.Repository.GetIntervals()
 		if err != nil {
 			logrus.Error(err)
 		}
 	} else {
-		intervals, err = h.Repository.GetIntervalsByTitle(searchQuery)
+		intervals, err = h.Repository.GetIntervalsByTitle(intervalsQuery)
 		if err != nil {
 			logrus.Error(err)
 		}
@@ -28,7 +28,7 @@ func (h *Handler) GetIntervals(ctx *gin.Context) {
 
 	ctx.HTML(http.StatusOK, "index.html", gin.H{
 		"intervals":         intervals,
-		"query":             searchQuery,
+		"query":             intervalsQuery,
 		"composition_count": h.Repository.GetCompositionCount(),
 		"composition_ID":    h.Repository.GetActiveCompositionID(),
 	})
