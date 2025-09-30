@@ -125,7 +125,7 @@ func (r *Repository) AddInterval(intervalsID uint, creatorID uint) error {
 func (r *Repository) DeleteComposition(comID uint) error {
 	query := `
 		UPDATE compositions 
-		SET status = 'Удалён'
+		SET status = 'Удалён', date_update = NOW()
 		WHERE id = $1;
 	`
 	result := r.db.Exec(query, comID)
