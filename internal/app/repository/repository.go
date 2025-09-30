@@ -116,7 +116,7 @@ func (r *Repository) GetIntervalsByTitle(title string) ([]Interval, error) {
 	return result, nil
 }
 
-func (r *Repository) GetCart() ([]Interval, error) {
+func (r *Repository) GetComposition() ([]Interval, error) {
 	intervals, err := r.GetIntervals()
 	if err != nil {
 		return []Interval{}, err

@@ -19,22 +19,21 @@
     {{ range .service_intervals }}
     <div class="row">
         <div class="order-card">
-            <div class="interval-info">
                 <img src="http://localhost:9000/interval-image/{{ .Image }}" alt="{{ .Title }}">
-                <div class="interval-text">
+                <div class="interval-content">
                     <h3>{{ .Title }}</h3>
                     <p>{{ .Description }}</p>
-                    <p>{{ .Tone }} тона</p>
+                    <p class="tone">{{ .Tone }} тона</p>
                     <a href="/interval/{{ .ID }}" class="btn more">Подробнее</a>
                 </div>
             </div>
-        </div>
-
         <div class="interval-input">
             <label for="count{{ .ID }}">Число интервалов</label>
             <input type="number" id="count{{ .ID }}" name="count{{ .ID }}" min="1" value="1">
         </div>
     </div>
+
+
     {{ end }}
 
     <div class="result-box">

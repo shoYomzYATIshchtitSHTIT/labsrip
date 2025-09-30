@@ -36,16 +36,16 @@ func (h *Handler) GetIntervals(ctx *gin.Context) {
 		}
 	}
 
-	cartIntervals, err := h.Repository.GetCart()
-	cartCount := 0
+	cartIntervals, err := h.Repository.GetComposition()
+	compositionCount := 0
 	if err == nil {
-		cartCount = len(cartIntervals)
+		compositionCount = len(cartIntervals)
 	}
 
 	ctx.HTML(http.StatusOK, "index.html", gin.H{
-		"intervals": intervals,
-		"query":     searchQuery,
-		"cartCount": cartCount,
+		"intervals":        intervals,
+		"query":            searchQuery,
+		"compositionCount": compositionCount,
 	})
 }
 
@@ -67,16 +67,16 @@ func (h *Handler) GetInterval(ctx *gin.Context) {
 	})
 }
 
-func (h *Handler) GetCart(ctx *gin.Context) {
+func (h *Handler) GetComposition(ctx *gin.Context) {
 	var intervals []repository.Interval
 	var err error
 
-	intervals, err = h.Repository.GetCart()
+	intervals, err = h.Repository.GetComposition()
 	if err != nil {
 		logrus.Error(err)
 	}
 
-	ctx.HTML(http.StatusOK, "cart.html", gin.H{
+	ctx.HTML(http.StatusOK, "composition.html", gin.H{
 		"service_intervals": intervals,
 	})
 }

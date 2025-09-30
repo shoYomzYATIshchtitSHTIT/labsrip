@@ -26,7 +26,7 @@ func StartServer() {
 
 	r.GET("/", handler.GetIntervals)
 	r.GET("/interval/:id", handler.GetInterval)
-	r.GET("/cart", handler.GetCart)
+	r.GET("/composition", handler.GetComposition)
 
 	r.Run()
 	log.Println("Server down")

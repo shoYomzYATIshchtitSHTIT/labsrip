@@ -212,39 +212,41 @@ body {
 }
 
 .order-card {
+    display: flex;
+    gap: 20px;
     border: 1px solid #ccc;
     padding: 15px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    width: 400px;
+    width: 400px; /* подогнать под макет */
+    align-items: flex-start; /* выравнивание по верхнему краю */
+    border-radius: 8px;
+    background: #fff;
 }
 
-.interval-info {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
-
-.interval-info img {
-    width: 120px;
+.interval-img {
+    width: 180px;
     height: auto;
+    flex-shrink: 0; /* картинка не сжимается */
 }
 
-.interval-text {
+.interval-content {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    flex: 1; /* занимает оставшееся место */
+    align-items: flex-start; /* ключевое: все элементы слева */
 }
 
-.interval-text h3 {
+
+.interval-content h3,
+.interval-content p {
     margin: 0;
-}
-
-.interval-text p {
-    margin: 2px 0;
     color: #333;
 }
+
+.interval-content .tone {
+    font-weight: 500;
+}
+
 
 .interval-input {
     display: flex;
