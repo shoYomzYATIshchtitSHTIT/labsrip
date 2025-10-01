@@ -134,6 +134,7 @@ body {
 .btn.add {
     background-color: #AFF3BB;
     color: #000;
+    display: none;
 }
 
 .btn.add:hover {

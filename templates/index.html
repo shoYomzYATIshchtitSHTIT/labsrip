@@ -26,7 +26,7 @@
     <div class="container">
         {{ range .intervals }}
         <div class="card">
-            <img src="http://localhost:9000/interval-image/{{ .Image }}" alt="img" class = "img">
+            <img src="http://localhost:9000/interval-image/{{ .Image }}" alt="img" class="img">
             <h2>{{ .Title }}</h2>
             <p class="desc">{{ .Description }}</p>
             <p class="tone">{{ .Tone }} тон</p>
@@ -38,11 +38,12 @@
         {{ end }}
     </div>
 </main>
-</body>
-<a href="/composition" style = "width: 130px; height: 130px;">
+
+<a href="/composition/1" style="width: 130px; height: 130px;"> <!-- ссылка на заявку с id=1 -->
     <img src="/static/img/loupe.png" style="height: 100px; width: 100px;" alt="Корзина">
     {{ if .compositionCount }}
     <span class="cart-badge" style="text-decoration: none">{{ .compositionCount }}</span>
     {{ end }}
 </a>
+</body>
 </html>

@@ -10,15 +10,18 @@ import (
 )
 
 type Handler struct {
-	Repository *repository.Repository
+	Repository      *repository.Repository
+	CompositionRepo *repository.CompositionRequestRepository
 }
 
-func NewHandler(r *repository.Repository) *Handler {
+func NewHandler(r *repository.Repository, cr *repository.CompositionRequestRepository) *Handler {
 	return &Handler{
-		Repository: r,
+		Repository:      r,
+		CompositionRepo: cr,
 	}
 }
 
+// ===== Интервалы =====
 func (h *Handler) GetIntervals(ctx *gin.Context) {
 	var intervals []repository.Interval
 	var err error
@@ -36,6 +39,7 @@ func (h *Handler) GetIntervals(ctx *gin.Context) {
 		}
 	}
 
+	// Получаем состав для счётчика
 	cartIntervals, err := h.Repository.GetComposition()
 	compositionCount := 0
 	if err == nil {
@@ -51,15 +55,18 @@ func (h *Handler) GetIntervals(ctx *gin.Context) {
 
 func (h *Handler) GetInterval(ctx *gin.Context) {
 	idStr := ctx.Param("id")
-
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		logrus.Error(err)
+		ctx.String(http.StatusBadRequest, "Неверный ID")
+		return
 	}
 
 	interval, err := h.Repository.GetInterval(id)
 	if err != nil {
 		logrus.Error(err)
+		ctx.String(http.StatusNotFound, "Интервал не найден")
+		return
 	}
 
 	ctx.HTML(http.StatusOK, "interval.html", gin.H{
@@ -68,15 +75,22 @@ func (h *Handler) GetInterval(ctx *gin.Context) {
 }
 
 func (h *Handler) GetComposition(ctx *gin.Context) {
-	var intervals []repository.Interval
-	var err error
-
-	intervals, err = h.Repository.GetComposition()
+	idStr := ctx.Param("id") // ID берём из пути
+	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		logrus.Error(err)
+		ctx.String(http.StatusBadRequest, "Неверный ID")
+		return
+	}
+
+	view, err := h.CompositionRepo.GetCompositionRequestViewByID(id)
+	if err != nil {
+		logrus.Error(err)
+		ctx.String(http.StatusNotFound, "Заявка не найдена")
+		return
 	}
 
 	ctx.HTML(http.StatusOK, "composition.html", gin.H{
-		"service_intervals": intervals,
+		"composition_request": view,
 	})
 }

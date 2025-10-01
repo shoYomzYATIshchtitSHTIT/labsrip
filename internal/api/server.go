@@ -12,21 +12,29 @@ import (
 func StartServer() {
 	log.Println("Starting server")
 
+	// Основной репозиторий интервалов
 	repo, err := repository.NewRepository()
 	if err != nil {
-		logrus.Error("Ошибка инициализация репозитория")
+		logrus.Error("Ошибка инициализации репозитория")
 	}
 
-	handler := handler.NewHandler(repo)
+	// Репозиторий заявок на композиции
+	compositionRepo, err := repository.NewCompositionRequestRepository()
+	if err != nil {
+		logrus.Error("Ошибка инициализации репозитория заявок")
+	}
+
+	// Создаём обработчик с обоими репозиториями
+	h := handler.NewHandler(repo, compositionRepo)
 
 	r := gin.Default()
 
 	r.LoadHTMLGlob("templates/*")
 	r.Static("/static", "./resources")
 
-	r.GET("/", handler.GetIntervals)
-	r.GET("/interval/:id", handler.GetInterval)
-	r.GET("/composition", handler.GetComposition)
+	r.GET("/", h.GetIntervals)
+	r.GET("/interval/:id", h.GetInterval)
+	r.GET("/composition/:id", h.GetComposition) // теперь ID через путь
 
 	r.Run()
 	log.Println("Server down")

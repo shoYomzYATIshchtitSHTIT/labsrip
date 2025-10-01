@@ -1,7 +1,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Корзина интервалов</title>
+    <title>Заявка на композицию</title>
     <link rel="stylesheet" href="/static/styles/index_style.css">
 </head>
 <body>
@@ -16,28 +16,26 @@
     <h2>Составление заявки</h2>
     <input type="text" class="composition-input" placeholder="Введите название произведения и композитора">
 
-    {{ range .service_intervals }}
+    {{ range .composition_request.Entries }}
     <div class="row">
         <div class="order-card">
-                <img src="http://localhost:9000/interval-image/{{ .Image }}" alt="{{ .Title }}">
-                <div class="interval-content">
-                    <h3>{{ .Title }}</h3>
-                    <p>{{ .Description }}</p>
-                    <p class="tone">{{ .Tone }} тона</p>
-                    <a href="/interval/{{ .ID }}" class="btn more">Подробнее</a>
-                </div>
+            <img src="http://localhost:9000/interval-image/{{ .Interval.Image }}" alt="{{ .Interval.Title }}">
+            <div class="interval-content">
+                <h3>{{ .Interval.Title }}</h3>
+                <p>{{ .Interval.Description }}</p>
+                <p class="tone">{{ .Interval.Tone }} тона</p>
+                <a href="/interval/{{ .Interval.ID }}" class="btn more">Подробнее</a>
             </div>
+        </div>
         <div class="interval-input">
-            <label for="count{{ .ID }}">Число интервалов</label>
-            <input type="number" id="count{{ .ID }}" name="count{{ .ID }}" min="1" value="1">
+            <label for="count{{ .Interval.ID }}">Число интервалов</label>
+            <input type="number" id="count{{ .Interval.ID }}" name="count{{ .Interval.ID }}" min="1" value="{{ .Amount }}">
         </div>
     </div>
-
-
     {{ end }}
 
     <div class="result-box">
-        Результат: Произведение является классическим
+        Результат: Произведение {{ .composition_request.CompositionRequest.Belonging }}
     </div>
 </div>
 </body>
