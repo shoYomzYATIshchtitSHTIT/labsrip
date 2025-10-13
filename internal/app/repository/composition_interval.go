@@ -130,10 +130,6 @@ func (r *CompositionIntervalRepository) FormComposition(id uint, creatorID uint)
 		return fmt.Errorf("composition not found or not in draft status")
 	}
 
-	if composition.Belonging == "" {
-		return fmt.Errorf("field 'belonging' (композитор) is required")
-	}
-
 	var intervalCount int64
 	err = r.db.Model(&ds.CompositorInterval{}).Where("composition_id = ?", id).Count(&intervalCount).Error
 	if err != nil {
@@ -171,17 +167,27 @@ func (r *CompositionIntervalRepository) CompleteComposition(id uint, moderatorID
 		return fmt.Errorf("composition not found or not in formed status")
 	}
 
-	S, mu := r.calculateClassicismCoefficient(id)
+	// Вычисляем принадлежность к классицизму по формуле
+	S, _ := r.calculateClassicismCoefficient(id) // убрал mu, так как он не используется
 	belongsToClassicism := S >= 0.5
+
+	// Формируем belonging в формате "принадлежит/не принадлежит"
+	var belongingResult string
+	if belongsToClassicism {
+		belongingResult = "принадлежит"
+	} else {
+		belongingResult = "не принадлежит"
+	}
 
 	updates := map[string]interface{}{
 		"status":       status,
 		"moderator_id": moderatorID,
 		"date_update":  time.Now(),
 		"date_finish":  time.Now(),
-		"belonging":    gorm.Expr("belonging || ?", fmt.Sprintf(" | S=%.3f (μ=%.2f) | Classicism:%v", S, mu, belongsToClassicism)),
+		"belonging":    belongingResult,
 	}
 
+	// Добавляем расчетные данные если есть
 	for key, value := range calculationData {
 		updates[key] = value
 	}
