@@ -2,39 +2,52 @@ package handler
 
 import (
 	"Backend-RIP/internal/app/repository"
+
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
-type Handler struct {
-	Repository *repository.Repository
-}
+func RegisterHandlers(router *gin.Engine, repo *repository.Repository) {
+	apiRouter := router.Group("/api")
 
-func NewHandler(r *repository.Repository) *Handler {
-	return &Handler{
-		Repository: r,
+	intervalHandler := NewIntervalHandler(repo)
+	intervalRouter := apiRouter.Group("/intervals")
+	{
+		intervalRouter.GET("", intervalHandler.GetIntervals)
+		intervalRouter.GET("/:id", intervalHandler.GetInterval)
+		intervalRouter.POST("", intervalHandler.CreateInterval)
+		intervalRouter.PUT("/:id", intervalHandler.UpdateInterval)
+		intervalRouter.DELETE("/:id", intervalHandler.DeleteInterval)
+		intervalRouter.POST("/add-to-composition", intervalHandler.AddIntervalToComposition)
+		intervalRouter.POST("/:id/image", intervalHandler.UpdateIntervalPhoto)
 	}
-}
 
-func (h *Handler) RegisterHandler(router *gin.Engine) {
-	router.GET("/", h.GetIntervals)
-	router.GET("/interval/:id", h.GetInterval)
-	router.GET("/composition/:id", h.GetComposition)
-	router.POST("/composition/add", h.AddToComposition)
-	router.POST("/composition/delete", h.DeleteComposition)
+	compositionHandler := NewCompositionHandler(repo)
+	compositionRouter := apiRouter.Group("/compositions")
+	{
+		compositionRouter.GET("/cart", compositionHandler.GetCompositionCart)
+		compositionRouter.GET("", compositionHandler.GetCompositions)
+		compositionRouter.GET("/:id", compositionHandler.GetComposition)
+		compositionRouter.PUT("/:id", compositionHandler.UpdateCompositionFields)
+		compositionRouter.PUT("/:id/form", compositionHandler.FormComposition)
+		compositionRouter.PUT("/:id/complete", compositionHandler.CompleteComposition)
+		compositionRouter.PUT("/:id/reject", compositionHandler.RejectComposition)
+		compositionRouter.DELETE("/:id", compositionHandler.DeleteComposition)
+	}
 
-}
+	compositionIntervalHandler := NewCompositionIntervalHandler(repo)
+	compositionIntervalRouter := apiRouter.Group("/composition-intervals")
+	{
+		compositionIntervalRouter.DELETE("", compositionIntervalHandler.RemoveFromComposition)
+		compositionIntervalRouter.PUT("", compositionIntervalHandler.UpdateCompositionInterval)
+	}
 
-func (h *Handler) RegisterStatic(router *gin.Engine) {
-	router.LoadHTMLGlob("templates/*")
-	router.Static("/styles", "./resources/styles")
-	router.Static("/img", "./resources/img")
-}
-
-func (h *Handler) errorHandler(ctx *gin.Context, errorStatusCode int, err error) {
-	logrus.Error(err.Error())
-	ctx.JSON(errorStatusCode, gin.H{
-		"status":      "error",
-		"description": err.Error(),
-	})
+	userHandler := NewUserHandler(repo)
+	userRouter := apiRouter.Group("/users")
+	{
+		userRouter.POST("/register", userHandler.Register)
+		userRouter.GET("/profile", userHandler.GetProfile)
+		userRouter.PUT("/profile", userHandler.UpdateProfile)
+		userRouter.POST("/login", userHandler.Login)
+		userRouter.POST("/logout", userHandler.Logout)
+	}
 }
