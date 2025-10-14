@@ -298,3 +298,49 @@ body {
     gap: 40px;
     margin-bottom: 20px;
 }
+
+.fixed-cart {
+    position: fixed;
+    left: 30px;
+    bottom: 30px;
+    z-index: 1000;
+}
+
+.cart-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.cart-link.active {
+    cursor: pointer;
+}
+
+.cart-link.inactive {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.cart-link img {
+    width: 100px;
+    height: 100px;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+}

@@ -20,6 +20,7 @@
         <input type="text" name="query" placeholder="Поиск интервала" value="{{ .query }}">
         <button type="submit">🔎</button>
     </form>
+
     <div class="container">
         {{ range .intervals }}
         <div class="card">
@@ -39,11 +40,19 @@
     </div>
 </div>
 
-<a href="/composition/{{ .composition_ID }}" style="width: 130px; height: 130px;">
-    <img src="/img/loupe.png" style="height: 100px; width: 100px;" alt="Корзина">
-    {{ if .composition_count }}
-    <span class="cart-badge">{{ .composition_count }}</span>
+<div class="fixed-cart">
+    {{ if .composition_ID }}
+    <a href="/composition/{{ .composition_ID }}" class="cart-link active">
+        <img src="/img/loupe.png" alt="Корзина">
+        {{ if .composition_count }}
+        <span class="cart-badge">{{ .composition_count }}</span>
+        {{ end }}
+    </a>
+    {{ else }}
+    <div class="cart-link inactive">
+        <img src="/img/loupe_gray.png" alt="Корзина неактивна">
+    </div>
     {{ end }}
-</a>
+</div>
 </body>
 </html>
