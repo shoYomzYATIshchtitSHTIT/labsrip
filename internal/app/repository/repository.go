@@ -4,7 +4,6 @@ import (
 	"Backend-RIP/internal/app/dsn"
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
@@ -45,20 +44,32 @@ func CloseDBConn(r *Repository) {
 }
 
 func InitMinIOClient() (*minio.Client, error) {
-	endpoint := os.Getenv("MINIO_HOST") + ":" + os.Getenv("MINIO_SERVER_PORT")
-	accessKeyID := os.Getenv("MINIO_ROOT_USER")
-	secretAccessKey := os.Getenv("MINIO_ROOT_PASSWORD")
+	endpoint := "localhost:9000" // nginx proxy
+
+	// Используем credentials из docker-compose
+	accessKeyID := "minio"
+	secretAccessKey := "minio124"
 	useSSL := false
+
+	logrus.Printf("MinIO Config - Endpoint: %s, User: %s", endpoint, accessKeyID)
 
 	minioClient, err := minio.New(endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
 		Secure: useSSL,
 	})
 	if err != nil {
+		logrus.Errorf("Failed to create MinIO client: %v", err)
 		return nil, fmt.Errorf("failed to create MinIO client: %v", err)
 	}
 
 	ctx := context.Background()
+
+	// Проверим подключение
+	_, err = minioClient.ListBuckets(ctx)
+	if err != nil {
+		logrus.Errorf("MinIO connection test failed: %v", err)
+		return nil, fmt.Errorf("minio connection test failed: %v", err)
+	}
 
 	exists, err := minioClient.BucketExists(ctx, intervalImagesBucket)
 	if err != nil {
@@ -73,5 +84,6 @@ func InitMinIOClient() (*minio.Client, error) {
 		logrus.Printf("Bucket '%s' created successfully\n", intervalImagesBucket)
 	}
 
+	logrus.Printf("MinIO client initialized successfully")
 	return minioClient, nil
 }

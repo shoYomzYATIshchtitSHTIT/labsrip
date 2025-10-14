@@ -29,7 +29,7 @@ func NewIntervalRepository(db *gorm.DB, minioClient *minio.Client) *IntervalRepo
 }
 
 const (
-	intervalImagesBucket = "interval-images"
+	intervalImagesBucket = "interval-image"
 )
 
 // GET список интервалов с фильтрацией
@@ -209,20 +209,41 @@ func (r *IntervalRepository) saveIntervalImageToMinIO(fileName string, fileHeade
 	return fmt.Sprintf("%s:%s/%s/%s", os.Getenv("MINIO_HOST"), os.Getenv("MINIO_SERVER_PORT"), intervalImagesBucket, fileName), nil
 }
 
-// deleteIntervalImage удаляет изображение интервала из MinIO
 func (r *IntervalRepository) deleteIntervalImage(imageURL string) error {
-	minioOrigin := os.Getenv("MINIO_HOST") + ":" + os.Getenv("MINIO_SERVER_PORT")
-	if strings.Contains(imageURL, minioOrigin) {
-		parts := strings.Split(imageURL, "/")
-		if len(parts) > 0 {
-			fileName := parts[len(parts)-1]
-			err := r.minioClient.RemoveObject(context.Background(), intervalImagesBucket, fileName, minio.RemoveObjectOptions{})
-			if err != nil {
-				return err
-			}
-			logrus.Printf("Interval image deleted from MinIO: %s\n", imageURL)
-			return nil
-		}
+	// Если imageURL пустой, ничего не удаляем
+	if imageURL == "" {
+		return nil
 	}
-	return errors.New("could not delete interval image file")
+
+	minioOrigin := os.Getenv("MINIO_HOST") + ":" + os.Getenv("MINIO_SERVER_PORT")
+
+	// Проверяем содержит ли URL правильный origin
+	if !strings.Contains(imageURL, minioOrigin) {
+		logrus.Printf("Image URL %s doesn't contain MinIO origin, skipping deletion", imageURL)
+		return nil
+	}
+
+	parts := strings.Split(imageURL, "/")
+	if len(parts) == 0 {
+		return errors.New("invalid image URL format")
+	}
+
+	fileName := parts[len(parts)-1]
+
+	// Проверяем существует ли файл в MinIO
+	_, err := r.minioClient.StatObject(context.Background(), intervalImagesBucket, fileName, minio.StatObjectOptions{})
+	if err != nil {
+		// Файл не существует - это нормально, логируем и продолжаем
+		logrus.Printf("File %s not found in MinIO bucket %s, skipping deletion", fileName, intervalImagesBucket)
+		return nil
+	}
+
+	// Файл существует - удаляем
+	err = r.minioClient.RemoveObject(context.Background(), intervalImagesBucket, fileName, minio.RemoveObjectOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to delete object from MinIO: %v", err)
+	}
+
+	logrus.Printf("Successfully deleted interval image from MinIO: %s", fileName)
+	return nil
 }
