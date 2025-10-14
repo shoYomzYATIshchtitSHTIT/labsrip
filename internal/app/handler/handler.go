@@ -24,7 +24,7 @@ func RegisterHandlers(router *gin.Engine, repo *repository.Repository) {
 	compositionHandler := NewCompositionHandler(repo)
 	compositionRouter := apiRouter.Group("/compositions")
 	{
-		compositionRouter.GET("/cart", compositionHandler.GetCompositionCart)
+		compositionRouter.GET("/comp-cart", compositionHandler.GetCompositionCart)
 		compositionRouter.GET("", compositionHandler.GetCompositions)
 		compositionRouter.GET("/:id", compositionHandler.GetComposition)
 		compositionRouter.PUT("/:id", compositionHandler.UpdateCompositionFields)
