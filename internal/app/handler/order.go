@@ -64,7 +64,7 @@ func (h *Handler) GetComposition(ctx *gin.Context) {
 		return
 	}
 	if !isDraft {
-		ctx.Redirect(http.StatusSeeOther, ctx.Request.Referer())
+		ctx.Redirect(http.StatusSeeOther, "/") // Редирект на главную страницу с интервалами
 		return
 	}
 
